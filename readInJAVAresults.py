@@ -6,13 +6,15 @@ def readAline(data):
    return outputData
 
 def readAcomplexline(data):
-   data.rstrip(']')
-   data.lstrip('[')
+   #data.rstrip(']')
+   #data.lstrip('[')
    c_strs = data.split(',')
    tmpData=map(lambda x:x.replace(" ",""),c_strs)
    outputData=[]
    for value in tmpData:
+      print(value)
       outputData.append(complex(value))
+      
    outputArray=np.array(outputData)   
    
    return outputArray
@@ -26,7 +28,8 @@ demean=[]
 taper=[]
 fft=[]
 psd=[]
-fileName = 'JAVAresults/test_Complex.txt'
+#fileName = 'JAVAresults/test_Complex.txt'
+fileName = 'JAVAresults/XX_KAS_BH_00-psdSteps_1.txt'
 with open(fileName,'r') as f:
    mydat = f.read()
    mydat = mydat.replace("[","")
@@ -39,7 +42,7 @@ with open(fileName,'r') as f:
 
    print('here')
    #fft=readAcomplexline(fileName)
-   fft=readAcomplexline(lines[15])
+   fft=readAcomplexline(lines[16])
    print('here2')
 
    plt.semilogx(10*np.log10(abs(fft)))

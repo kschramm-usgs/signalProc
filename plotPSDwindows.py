@@ -76,13 +76,9 @@ with open(file,'r') as f:
    detrendData=readAline(lines[9])
    demeanData=readAline(lines[11])
    taperedData=readAline(lines[13])
-   fftData=readAcomplexline(lines[15])
+   fftData=readAcomplexline(lines[16])
    PSDData=readAline(lines[17])
 # look at the raw data
-   #for value in lines[7:216007]:
-   #    rawData.append(float(value))
-   #print(trimmedSeed.stats['npts'])
-   #print(len(rawData))
    for i in range(trimmedSeed.stats['npts']):
        resid.append(rawData[i] - trimmedSeed[i])
    if(plotFlag):
@@ -98,8 +94,6 @@ with open(file,'r') as f:
        plt.show()
 # now look at the detrended data
    resid[:]=[]
-   #for value in lines[216008:432008]:
-   #    detrendData.append(float(value))
    trimmedSeed.detrend('linear')
    for i in range(trimmedSeed.stats['npts']):
        resid.append(detrendData[i] - trimmedSeed[i])
@@ -115,8 +109,6 @@ with open(file,'r') as f:
        plt.show()
 # now look at the demeaned data
    resid[:]=[]
-   for value in lines[432009:648009]:
-       demeanData.append(float(value))
    trimmedSeed.detrend('constant')
    for i in range(trimmedSeed.stats['npts']):
        resid.append(demeanData[i] - trimmedSeed[i])
@@ -132,8 +124,6 @@ with open(file,'r') as f:
        plt.show()
 # now look at the tapered data
    resid[:]=[]
-   for value in lines[648010:864010]:
-       taperedData.append(float(value))
    print(taperedData[-1])
    trimmedSeed.taper(0.05,type='cosine')
    for i in range(trimmedSeed.stats['npts']):
@@ -149,10 +139,6 @@ with open(file,'r') as f:
        plt.title('Residual')
        plt.show()
 # now look at the fft data
-   for value in lines[864011:1126155]:
-       value = value.replace(" ","")
-       j = complex(value)
-       fftData.append(j)
    print(fftData[0])
    print(fftData[-1])
 # reset plot flag
@@ -174,8 +160,6 @@ with open(file,'r') as f:
        plt.title('by index')
        plt.show()
 # now look at the PSD data
-   for value in lines[1126156:1257229]:
-       PSDData.append(value)
    PSDSeed = (fftSeed*np.conj(fftSeed))
    if(plotFlag):
        plt.loglog(PSDData,'k',label='PSD from test suite')
