@@ -41,10 +41,12 @@ out_trace1=full_trace.copy()
 #etime = UTCDateTime('2016-07-14T02:29:59.994500Z')
 #etime = UTCDateTime('2016-07-14T02:29:59.969500Z')
 stime=UTCDateTime('1970-01-01T00:00:00.000000Z')
-etime = UTCDateTime('1970-01-01T06:59:59.200000Z')
+# etime for trimming needs to be window length
+etime = UTCDateTime('1970-01-01T01:29:59.72500Z')
 
 out_trace1.trim(starttime=stime,endtime=etime)
 trimmedSeed=out_trace1.copy()
+print(trimmedSeed.stats)
 trimmedSeed.trim(starttime=stime,endtime=etime)
 nyq = out_trace1.stats['sampling_rate'] / 2
 
@@ -61,7 +63,7 @@ PSDData=[]
 numHeaderLines=7
 resid=[]
 #file='JAVAresults/XX_TST5_00_BH0-psdSteps_1.txt'
-file='JAVAresults/XX_KAS_BH_00-psdSteps_1.txt'
+file='JAVAresults/XX_KAS_00_BHZ-psdSteps_1.txt'
 #file='JAVAresults/tmp1.txt'
 with open(file,'r') as f:
    mydat = f.read()
@@ -79,18 +81,20 @@ with open(file,'r') as f:
    fftData=readAcomplexline(lines[16])
    PSDData=readAline(lines[17])
 # look at the raw data
-   for i in range(trimmedSeed.stats['npts']):
-       resid.append(rawData[i] - trimmedSeed[i])
+   print(len(rawData))
+   print(len(trimmedSeed))
+   #for i in range(len(rawData)):
+   #    resid.append(rawData[i] - trimmedSeed[i])
    if(plotFlag):
-       plt.subplot(2,1,1)
-       plt.plot(rawData,'k',label='raw from test suite')
+   #    plt.subplot(2,1,1)
        plt.plot(trimmedSeed,'r',label='raw from seed plotted in python')
+       plt.plot(rawData,'k',label='raw from test suite')
        #plt.xlim(0,100)
        plt.legend()
-       plt.subplot(2,1,2)
-       plt.plot(resid,'b',label='residual')
-       plt.title('Residual')
-       plt.ylim(-.0005, 0.0005)
+   #    plt.subplot(2,1,2)
+   #    plt.plot(resid,'b',label='residual')
+   #    plt.title('Residual')
+   #    plt.ylim(-.0005, 0.0005)
        plt.show()
 # now look at the detrended data
    resid[:]=[]
