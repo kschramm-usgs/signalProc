@@ -111,22 +111,21 @@ with open(file,'r') as f:
 #while pad < out.size:
 #    pad *= 2
 #pad=np.ceil(np.log2(out.size))
-nsegments=4.
-pad=np.power(2,int(np.ceil(np.log2(out.size/nsegments))))
 #nfft=pad/4
-nfft=int(pad)
-overlap=int(3*nfft//4)
 #print(pad, nfft,overlap)
 #print(nfft/overlap)
-
-
 #numer, freqs1 = mlab.csd(out, cal, sides='onesided', pad_to=pad, NFFT=nfft, noverlap=overlap, scale_by_freq=False)
+
+nsegments=4.
+pad=np.power(2,int(np.ceil(np.log2(out.size/nsegments))))
+nfft=int(pad)
+overlap=int(3*nfft//4)
 scalg = 'density'
-freqs1,numer = csd(out, cal, fs=smpr, nfft=nfft, nperseg=pad, return_onesided=False, noverlap=overlap,scaling=scalg)
+freqs1,numer = csd(out, cal, fs=smpr, nfft=nfft, nperseg=pad, return_onesided=True, noverlap=overlap,scaling=scalg)
 scalg1 = 'spectrum'
-freqs1,numer1 = csd(out, cal, fs=smpr, nfft=nfft, nperseg=pad, return_onesided=False, noverlap=overlap,scaling=scalg)
+freqs1,numer1 = csd(out, cal, fs=smpr, nfft=nfft, nperseg=pad, return_onesided=True, noverlap=overlap,scaling=scalg)
 #numer, freqs1 = mlab.psd(out, sides='onesided', pad_to=pad, NFFT=nfft, noverlap=overlap, scale_by_freq=True)
-denom, freqs2 = mlab.psd(cal, sides='onesided', pad_to=pad, NFFT=nfft, noverlap=overlap, scale_by_freq=True)
+#denom, freqs2 = mlab.psd(cal, sides='onesided', pad_to=pad, NFFT=nfft, noverlap=overlap, scale_by_freq=True)
 
 smoothness = rms(np.diff(np.abs(numer)))
 print(smoothness)

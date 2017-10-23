@@ -4,6 +4,19 @@ import matplotlib.pyplot as plt
 from obspy.mseed.util import shift_time_of_file
 from obspy import Stream, Trace, UTCDateTime
 
+''' 
+    psd_quicktest: produces a time-series of a sine wave at known
+    frequencies and the psd plotted using different methods.
+
+    Austin Holland, ASL
+
+    updated to write out sine wave to seed file for testing seismic
+    processing code.
+
+    Kimberly Schramm, ASL/KBRWyle
+'''
+
+
 #dt = np.pi / 100.
 dt = 0.025
 fs = 1. / dt
@@ -12,7 +25,7 @@ print('sampling frequency = '+str(fs))
 nsamp=(7.025*60.*60.)
 t = np.arange(0, nsamp, dt)
 y = 10. * np.sin(2 * np.pi * 4 * t) + 5. * np.sin(2 * np.pi * 1 * t)
-#y = y + np.random.randn(*t.shape)
+y = y + np.random.randn(*t.shape)
 
 nfft=np.int(np.power(2,np.ceil(np.log2(len(y)))))
 
@@ -52,6 +65,7 @@ print(tr.stats['endtime'])
 st=Stream()
 st+=tr
 st.plot()
+print(st[0].stats['npts'])
 st.write('XX_KAS.00_BHZ.seed', format='MSEED', reclen=512)
 #shift_time_of_file(fileIn, fileOut, 10000)
 #
